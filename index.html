@@ -1,1 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Chat App</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        #chat-container {
+            height: 300px;
+            overflow-y: scroll;
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+        #input-container {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="chat-container"></div>
+    <div id="input-container">
+        <input type="text" id="messageInput" placeholder="Type your message...">
+        <button onclick="sendMessage()">Send</button>
+    </div>
+
+    <script>
+        function sendMessage() {
+            const messageInput = document.getElementById('messageInput');
+            const chatContainer = document.getElementById('chat-container');
+
+            if (messageInput.value.trim() !== '') {
+                const message = document.createElement('p');
+                message.textContent = `You: ${messageInput.value}`;
+                chatContainer.appendChild(message);
+
+                // Clear the input field
+                messageInput.value = '';
+
+                // Scroll to the bottom to show the latest message
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }
+        }
+    </script>
+</body>
+</html>
 
