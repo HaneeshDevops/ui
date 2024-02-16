@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat App with Local Storage</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        #chat-container {
+            height: 300px;
+            overflow-y: scroll;
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+        #input-container {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="chat-container"></div>
+    <div id="input-container">
+        <input type="text" id="messageInput" placeholder="Type your message...">
+        <button onclick="sendMessage()">Send</button>
+    </div>
+
+    <script>
+        // Function to send a message
+        function sendMessage() {
+            const messageInput = document.getElementById('messageInput');
+            const chatContainer = document.getElementById('chat-container');
+
+            if (messageInput.value.trim() !== '') {
+                // Create a new message element
+                const message = document.createElement('p');
+                message.textContent = `You: ${messageInput.value}`;
+                
+                // Append the message to the chat container
+                chatContainer.appendChild(message);
+
+                // Save the message to local storage
+                saveMessage(messageInput.value);
+
+                // Clear the input field
+                messageInput.value = '';
+
+                // Scroll to the bottom to show the latest message
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }
+        }
+
+        // Function to save a message to local storage
+        function saveMessage(message) {
+            let messages = localStorage.getItem('chatMessages') || '[]';
+            messages = JSON.parse(messages);
+            messages.push(message);
+            localStorage.setItem('chatMessages', JSON.stringify(messages));
+        }
+
+        // Function to load previous messages from local storage
+        function loadMessages() {
+            const chatContainer = document.getElementById('chat-container');
+            let messages = localStorage.getItem('chatMessages') || '[]';
+            messages = JSON.parse(messages);
+
+            // Display previous messages in the chat container
+            messages.forEach((message) => {
+                const messageElement = document.createElement('p');
+                messageElement.textContent = message;
+                chatContainer.appendChild(messageElement);
+            });
+
+            // Scroll to the bottom to show the latest message
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        // Load previous messages when the page loads
+        window.onload = loadMessages;
+    </script>
+</body>
+</html>
